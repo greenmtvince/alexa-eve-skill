@@ -55,6 +55,16 @@ var sessionState = {
    "Character" : ""
 }  */
 
+var myAPI = {
+    host: "",
+    port: 443,
+    path: "",
+    method: 'GET',
+    headers: {
+        "User-Agent": "eve-Aura-Alexa",
+    }
+};
+
 // 3. Skill Code =======================================================================================================
 
  exports.handler = function (event, context) {
@@ -135,33 +145,24 @@ const handlers = {
 };
 
 // 4. Helper Functions =======================================================================================================
+
+//Get the Character ID of the current user
 function getCharacter(callback){
-   var myAPI = {
-       host: "login.eveonline.com",
-       port: 443,
-       path: '/oauth/verify',
-       method: 'GET',
-       headers: {
-           "User-Agent": "eve-Aura-Alexa",
-           "Authorization": "Bearer " + myToken
-       }
-   };
+   myAPI.host= "login.eveonline.com";
+   myAPI.path="/oauth/verify";
+   myAPI.headers.Authorization = "Bearer " +myToken;
+
    var response = apiCall(myAPI, myResponse=>{
        callback(myResponse);
    });
 }
 
+//Get the Location ID of the current user
 function getLocation(callback){
-   var myAPI = {
-       host: "esi.tech.ccp.is",
-       port: 443,
-       path: '/latest/characters/'+charID+'/location/?datasource=tranquility',
-       method: 'GET',
-       headers: {
-           "User-Agent": "eve-Aura-Alexa",
-           "Authorization": "Bearer " + myToken
-       }
-   };
+    myAPI.host= "esi.tech.ccp.is";
+    myAPI.path='/latest/characters/'+charID+'/location/?datasource=tranquility';
+    myAPI.headers.Authorization = "Bearer " +myToken;
+
    apiCall(myAPI, myResponse=>{
        console.log("SYS_DATA"+myResponse);
        var solarSystem = JSON.parse(myResponse);
@@ -172,16 +173,11 @@ function getLocation(callback){
    });
 }
 
+//Use the location ID to retrieve the system name
 function getSystemName(callback){
-   var myAPI = {
-       host: "esi.tech.ccp.is",
-       port: 443,
-       path: '/latest/universe/systems/'+systemID+'/?datasource=tranquility',
-       method: 'GET',
-       headers: {
-           "User-Agent": "eve-Aura-Alexa",
-       }
-   };
+    myAPI.host= "esi.tech.ccp.is";
+    myAPI.path='/latest/universe/systems/'+systemID+'/?datasource=tranquility';
+
    var response = apiCall(myAPI, myResponse=>{
        console.log("SYS_NAME"+myResponse)
        var jsonObj = JSON.parse(myResponse);
@@ -189,19 +185,14 @@ function getSystemName(callback){
    });
 }
 
-//https://www.zkillboard.com/api/kills/system/30002505/limit/50/orderDirection/desc/
-function getLastKill(callback){
-   var zKillApi = {
-       host: 'zKillboard.com',
-       port: 443,
-       path: "/api/kills/system/" +systemID+ "/limit/50/orderDirection/desc/",
-       method: 'GET',
-       headers: {
-           "User-Agent": "eve-Aura-Alexa"
-       }
-   };
 
-   apiCall(zKillApi, zresponse=>{
+//Calls the ZKillboard API to get the list of killmails for the current system, then returns an 
+//object with Days, Hours, and Minutes since the most recent kill in system.
+function getLastKill(callback){
+    myAPI.host= "zKillboard.com";
+    myAPI.path='/api/kills/system/' +systemID+'/limit/50/orderDirection/desc/';
+
+   apiCall(myAPI, zresponse=>{
        var stringResp = "{\"results\": " + zresponse + "}";
        var kills = JSON.parse(stringResp);
        var lastKillDate = Date.parse(kills.results[0].killmail_time);
@@ -243,6 +234,7 @@ function deltaTimeToString(deltaT)
    return totalTime;
 }
 
+//This makes all the external API calls.
 function apiCall(uri, callback){
    var https = require('https');
 
