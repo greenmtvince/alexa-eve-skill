@@ -1,0 +1,39 @@
+{
+  "languageModel": {
+    "intents": [
+      {
+        "name": "AMAZON.CancelIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.HelpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StopIntent",
+        "samples": []
+      },
+      {
+        "name": "lastKill",
+        "samples": [
+          "when was the last kill",
+          "when was the last kill in system",
+          "last kill",
+          "most recent kill",
+          "most recent kill mail",
+          "how long ago was the last kill"
+        ],
+        "slots": []
+      },
+      {
+        "name": "location",
+        "samples": [
+          "where am i",
+          "where is my character"
+        ],
+        "slots": []
+      }
+    ],
+    "invocationName": "my aura"
+  }
+}
