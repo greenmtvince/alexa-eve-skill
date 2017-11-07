@@ -31,12 +31,24 @@ const languageStrings = {
         translation: {
             SKILL_NAME: 'Eve Aura',
         },
-    },
+    },*/
     'de-DE': {
         translation: {
-            SKILL_NAME: 'Eve Aura auf Deutsch',
+            SKILL_NAME: "EVE Aura",
+            GET_FACT_MESSAGE: "Hier ist dein Fakt: ",
+            HELP_MESSAGE: "Say Intel, for an intel report on your location.  News for a list of the most recent EVE stories. Location, for current location.  Last kill, for info on the last kill in system.",
+            HELP_REPROMPT: "Wie kann ich dir helfen?",
+            STOP_MESSAGE: "Auf Wiedersehen!",
+            SALUTATION: "Hallo ",
+            WELCOME_MSG: ".  Wenn du einen Intel Report für deinen aktuellen Ort hören möchtest, sage Intel. Wenn Du gerne die Top Stories hören möchtest, sage News. Für weitere Optionen, sage Hilfe.",
+            LOCATION_MSG: "Du befindest dich aktuell in ",
+            LASTKILL_MSG: "Der letzte Kill fand vor ",
+            LASTKILL_TIME_ADVERB: " statt.",
+            UNIT_DAYS: "Tage",
+            UNIT_HOURS: "Stunden",
+            UNIT_MINUTES: "Minuten"
         },
-    },*/
+    },
 };
 // 2. Session Objects ====================================================================================================
 
