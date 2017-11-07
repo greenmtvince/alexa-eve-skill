@@ -2,6 +2,17 @@
   "languageModel": {
     "intents": [
       {
+        "name": "activeCorp",
+        "samples": [
+          "Who is the most active corp",
+          "active corp",
+          "most active corporation",
+          "most active corporation in this system",
+          "who is the most active corporation in this system"
+        ],
+        "slots": []
+      },
+      {
         "name": "AMAZON.CancelIntent",
         "samples": []
       },

@@ -24,7 +24,8 @@ const languageStrings = {
             LASTKILL_TIME_ADVERB: " ago.",
             UNIT_DAYS: "Days",
             UNIT_HOURS: "Hours",
-            UNIT_MINUTES: "Minutes"
+            UNIT_MINUTES: "Minutes",
+            ACTIVE_CORP_MSG: "The most active corporation in this system is "
         },
     },
     /*'en-GB': {
@@ -131,6 +132,18 @@ const handlers = {
            });
        });
     },
+    'activeCorp': function(){
+        getCharacter(myResp=>{
+            var charData = JSON.parse(myResp);
+            charID = charData.CharacterID;
+            getLocation(locationResponse=>{
+                activeCorp(corpName=>{
+                    var activeCorpMsg = this.t('ACTIVE_CORP_MSG') + corpName;
+                    this.emit(':tell', activeCorpMsg);
+                });                
+            });
+        });
+    },
     'AMAZON.HelpIntent': function () {
         const speechOutput = this.t('HELP_MESSAGE');
         const reprompt = this.t('HELP_MESSAGE');
@@ -203,6 +216,18 @@ function getLastKill(callback){
    });
 }
 
+function activeCorp(callback){
+    myAPI.host= "zKillboard.com";
+    myAPI.path="/api/stats/solarSystemID/" +systemID+'/';
+    
+    apiCall(myAPI, response=>{
+        var stringResp = "{\"results\": " + response + "}";
+        var killStats = JSON.parse(stringResp);
+        var topCorp=killStats.results.topAllTime[1].data[0].corporationName;
+        callback(topCorp);
+    });
+}
+
 //This takes a difference in time or timespan in milliseconds and converts it to a string stating 
 //Days hours and minutes in the difference.  
 function deltaTimeToString(deltaT)
@@ -233,6 +258,8 @@ function deltaTimeToString(deltaT)
    };
    return totalTime;
 }
+
+
 
 //This makes all the external API calls.
 function apiCall(uri, callback){
